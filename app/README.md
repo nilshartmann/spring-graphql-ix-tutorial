@@ -22,17 +22,17 @@ Im `publy`-Verzeichnis des Repositories:
 
 **Schritt 3: Userservice starten**
 
-Achtung! Port 8081 darf nicht belegt sein:
+Achtung! Port 17081 darf nicht belegt sein:
 
 - `./gradlew publy-userservice:bootRun`
   
 **Schritt 4: Backend starten**
 
-Achtung! Port 8080 darf nicht belegt sein:
+Achtung! Port 17080 darf nicht belegt sein:
 
 - `./gradlew publy-backend:bootRun`
 
-Du kannst nun über `http://localhost:8080` den GraphiQL-Explorer
+Du kannst nun über `http://localhost:17080` den GraphiQL-Explorer
 aufmachen und Queries und Mutations ausführen.
 
 **Schritt 5: Frontend starten (optional)**
