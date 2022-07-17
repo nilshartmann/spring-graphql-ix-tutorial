@@ -1,0 +1,126 @@
+type Story  {
+    id: ID!
+    "The title of this Story, should be short and precise"
+    title: String!
+
+    createdAt: String!
+    writtenBy: Member!
+
+    "The actual story text. Rendered as HTML"
+    body: String!
+
+    """
+    Returns a short _excerpt_ of this Story's body.
+
+    The returned string _does not_ contain any markdown or html code.
+    """
+    excerpt(maxLength: Int! = 200): String!
+
+
+    """List of Comments that this Story has received"""
+    comments: [Comment!]!
+}
+"""
+An accunt of a user that is able to login into our application.
+
+Authorization is done in a separate process that also stores other User information, like credentials and roles
+"""
+type User {
+    id: ID!
+
+    "Username is used to login"
+    username: String!
+
+    "Fullname of a user"
+    name: String!
+
+    "The user's E-Mail adress"
+    email: String!
+}
+
+"""
+A Member is a person that is part of our application.
+
+"""
+type Member {
+    id: ID!
+    createdAt: String!
+    profileImageUrl: String!
+    """
+    The `User` that is represented by this member.
+
+    If the `User` does not exists anymore, null is returned
+    """
+    user: User
+}
+
+"""
+A Comment is written by a Member for a Story of another member
+
+A Comment cannot be changed and does not have a title.
+
+"""
+type Comment {
+    id: ID!
+
+    "When was this comment written?"
+    createdAt: String!
+    writtenBy: Member!
+
+    content: String!
+    story: Story!
+}
+
+
+type Query {
+    """
+    Returns the `Story` with the specified `id` or null if there is no `Story`
+    with that `id`.
+
+    If you don't specify an `id`, the topmost story is returned
+    """
+    story(id: ID): Story
+
+    """Returns all stories, ordered by their creation date, newest first"""
+    stories: [Story!]!
+}
+
+"""
+Input-Type for adding a new `Comment`
+"""
+input AddCommentInput {
+    "The id of the `Story` that the comment should be added to"
+    storyId: ID!
+
+    "The comment itself"
+    content: String!
+}
+
+type Mutation {
+    """
+    Add a new `Comment` to a `Story`
+
+    Note:
+    - to add a Comment you have to be logged in. Anonymoud users cannot add comments.
+    - the content lenght must be at least 5 characters
+
+    """
+    addComment(input: AddCommentInput!): Comment!
+}
+
+"""
+This event is raised when a new `Comment` has been successfully added to a `Story`
+"""
+type OnNewCommentEvent {
+    """
+    The newly added Comment object
+    """
+    newComment: Comment!
+}
+
+type Subscription {
+    """
+    Register for new comments for the given story
+    """
+    onNewComment(storyId: ID!):OnNewCommentEvent!
+}

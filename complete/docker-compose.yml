@@ -1,0 +1,24 @@
+version: "3"
+services:
+  publy_db:
+    image: postgres:14.1-alpine
+    command:
+      - postgres
+      - -c
+      - log_statement=all
+      - -c
+      - wal_level=logical
+      - -c
+      - max_wal_senders=1
+      - -c
+      - max_replication_slots=1
+    container_name: publy_db
+    ports:
+      - "17432:5432"
+    environment:
+      - POSTGRES_PASSWORD=secretpw
+      - POSTGRES_USER=klaus
+      - POSTGRES_DB=publy_db
+    volumes:
+      - ./docker/initdb:/docker-entrypoint-initdb.d
+      - ./docker/db-data:/var/lib/postgresql/data
