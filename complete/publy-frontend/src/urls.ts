@@ -2,11 +2,11 @@ declare var process: any;
 
 const backendHost = window.__publy__backend_host__.replace(
   "__BACKEND__",
-  "http://localhost:8080"
-);
+  "http://localhost:17080"
+)
 const userserviceHost = window.__publy__userservice_host__.replace(
   "__USERSERVICE__",
-  "http://localhost:8081"
+  "http://localhost:17081"
 );
 
 export const userServiceUrl = `${userserviceHost}`;
